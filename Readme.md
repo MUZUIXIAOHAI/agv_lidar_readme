@@ -286,7 +286,7 @@ odom_model_type为模型类型这里diff为差速控制
 ```
 rosrun rqt_tf_tree rqt_tf_tree
 ```
-***
+
 # 节点图
 ## 节点图可以清楚地看到哪个节点发布了什么消息和订阅了什么消息
 ![node_graph](./rosgraph.png "node_graph")
@@ -295,4 +295,13 @@ rosrun rqt_tf_tree rqt_tf_tree
 /rplidartoADV节点发布了里程计主题/odom
 /imu_node计节点发布了imu数据主题/imu
 /robot_pose_ekf节点订阅了/odom和/imu主题，然后发布了/robot_pose_ekf/odom_combined主题
-其他更多的请查看该节点图
+其他更多的请查看该节点图    
+查看节点图的命令：
+```
+rqt_graph
+```
+***
+# 当换计算机时，可以映射串口到固定名称，这样就不需要按顺序插入传感器了，可以参考[蓝鲸的这个帖子](https://community.bwbot.org/topic/134/%E5%B0%8F%E5%BC%BAros%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%95%99%E7%A8%8B-13-___rplidar%E4%BA%8C%E4%BB%A3%E6%BF%80%E5%85%89%E9%9B%B7%E8%BE%BE%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E5%88%A9%E7%94%A8udev%E7%BB%99%E5%B0%8F%E8%BD%A6%E5%A2%9E%E5%8A%A0%E4%B8%B2%E5%8F%A3%E8%AE%BE%E5%A4%87)
+**或者运行/shenlan/driver/lidar/rplidar_ros/scripts/create_udev_rules.sh，这个文件我已经配置好，直接运行就可以了，运行完后插入传感器就可以看到对应的映射**
+***
+# [蓝鲸论坛](https://community.bwbot.org/)有很多可以值得参考的地方，可以多查看
