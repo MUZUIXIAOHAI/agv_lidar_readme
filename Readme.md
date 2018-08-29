@@ -1,6 +1,6 @@
 # 关于速腾16线激光雷达的使用
 ### 已经配置好，网线直接连上就可以了
-### 可参考github上的readme.md
+### 可参考github上的[readme.md](https://github.com/MUZUIXIAOHAI/ros_rslidar)
 ### 首先把库从github上拉下来
 ```
 git clone https://github.com/MUZUIXIAOHAI/ros_rslidar.git
@@ -21,7 +21,7 @@ roslaunch rslidar_pointcloud rs_lidar_16.launch
 ***
 
 # 把16线激光雷达数据合成高质量2D激光雷达数据
-### 可参考蓝鲸机器人论坛的帖子（叫“使用pointcloud_to_laserscan包将速腾聚创3D激光雷达转换成高质量2d激光雷达”）
+### 可参考[蓝鲸机器人论坛的帖子](https://community.bwbot.org/topic/521/%E4%BD%BF%E7%94%A8pointcloud_to_laserscan%E5%8C%85%E5%B0%86%E9%80%9F%E8%85%BE%E8%81%9A%E5%88%9B3d%E6%BF%80%E5%85%89%E9%9B%B7%E8%BE%BE%E8%BD%AC%E6%8D%A2%E6%88%90%E9%AB%98%E8%B4%A8%E9%87%8F2d%E6%BF%80%E5%85%89%E9%9B%B7%E8%BE%BE)（叫“使用pointcloud_to_laserscan包将速腾聚创3D激光雷达转换成高质量2d激光雷达”）
 ### 利用pointcloud_to_laserscan把点云数据合成2D激光雷达数据（需要先启动16线激光雷达生成点云数据）
 '''
 roslaunch pointcloud_to_laserscan xiaoqiang_rslidar.launch
@@ -30,8 +30,8 @@ roslaunch pointcloud_to_laserscan xiaoqiang_rslidar.launch
 ***
 
 # 利用cartogragper包构建高质量地图
-### 可参考蓝鲸论坛的这个帖子，或者参考小强机器人手册中的第16章节
-### 使用splidar构建2D地图（也可以使用16线激光雷达合成的2D激光雷达数据去跑）
+### 可参考[蓝鲸论坛的这个帖子](https://community.bwbot.org/topic/137/%E5%B0%8F%E5%BC%BAros%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%95%99%E7%A8%8B-16-___%E5%A4%A7%E8%8C%83%E5%9B%B4%E6%BF%80%E5%85%89%E9%9B%B7%E8%BE%BEslam%E4%B8%8E%E5%AE%9E%E6%97%B6%E5%9B%9E%E8%B7%AF%E9%97%AD%E5%90%88%E6%B5%8B%E8%AF%95)，或者参考小强机器人手册中的第16章节
+### 使用rplidar构建2D地图（也可以使用16线激光雷达合成的2D激光雷达数据去跑）
 ```
 roslaunch cartographer_ros xiaoqiang_rplidar_2d.launch
 ```
@@ -69,7 +69,7 @@ roslaunch adv_comm agv_move_base.launch
 ```
 ### 启动move_base包：
 #### 这里使用深蓝学院配置的move_base包和参数
-#### move_base包参数的含义和详情可以参考ros官网的说明
+#### move_base包参数的含义和详情可以参考[ros官网move_base的说明](http://wiki.ros.org/move_base)
 ```
 <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
         <rosparam file="$(find adv_comm)/param/move_base_params.yaml" command="load" />
@@ -124,7 +124,7 @@ roslaunch adv_sim agv_amcl_slam_v2.launch
 ```
 ###
 ### 使用amcl定位
-### 参数的说明可以在ros官网上查询
+### 参数的说明可以在[ros官网](http://wiki.ros.org/amcl)上查询
 ```
 <node pkg="amcl" type="amcl" name="amcl" output="screen">
         <param name="use_map_topic"             value="ture"/>
@@ -167,3 +167,4 @@ roslaunch adv_sim agv_amcl_slam_v2.launch
 <node pkg="rviz" type="rviz" name="rviz"
     args="-d $(find adv_sim)/test_odom.rviz"/>
 ```
+***
