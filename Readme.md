@@ -168,3 +168,108 @@ roslaunch adv_sim agv_amcl_slam_v2.launch
     args="-d $(find adv_sim)/test_odom.rviz"/>
 ```
 ***
+***
+***
+# 里程计说明：
+## “get_message.launch”
+*adv_comm->launch->get_message.launch*
+该文件是生成里程计的launch文件，源代码在**adv_comm->src->rplidar_client.cpp**文件
+该文件订阅了“cmd_vel”主题，接收速度指令，通过串口传输到agv上，从而驱动agv动作
+发布“odom”主题，利用agv传回来的电机脉冲计算出行驶里程
+`initial_all()`是初始化串口和设置一些初始参数
+`sp1operation()`是发送速度信息到agv，控制agv行动，并且接收agv采集回来的电机脉冲数据
+`calculate_odom(odom)`是计算里程计数据
+`odom_pub.publish(odom)`发布里程计主题
+`velCallback_motorspeed()`该函数是有速度主题发出，就进入该函数，把速度信息给到agv
+***
+# IMU说明：
+## “razor-pub.launch”
+*razor_imu_9dof->launch->razor-pub.launch*
+IMU主程序可不用修改
+IMU的参数设置在这个文件“razor_imu_9dof/config/razor.yaml”
+该文件下：
+`port: /dev/ttyUSB003`这里更改串口名称
+***
+# 雷达说明：
+## 雷达串口、波特率可直接在此处修改
+```
+<!-- start rplidar -->
+<node name="rplidarNode"          pkg="rplidar_ros"  type="rplidarNode" output="screen">
+  <param name="serial_port"         type="string" value="/dev/ttyUSB001"/>
+  <param name="serial_baudrate"     type="int"    value="115200"/>
+  <param name="frame_id"            type="string" value="laser"/>
+  <param name="inverted"            type="bool"   value="false"/>
+  <param name="angle_compensate"    type="bool"   value="true"/>
+</node>
+```
+***
+# move_base包说明：
+## move_base包主要是一些参数设置，这里就说一些主要设置的参数
+move_base包的参数在“adv_comm/param”文件夹下
+**虽然在dwa_local_planner_params.yaml文件下定义了最高速为0.3m/s，但是在rplidar_client.cpp文件下，在对agv下发速度之前就限制了最高速为0.1m/s，以保证安全**
+***
+# 里程计与IMU数据融合
+## “robot_pose_ekf/robot_pose_ekf.launch”
+[遇到问题可以查看下这个帖子](https://blog.csdn.net/qq_25241325/article/details/80825327)（调用一下服务看下主题正不正常）
+这个包主要使用odom与imu进行融合，输出odom_combined
+```
+<node pkg="robot_pose_ekf" type="robot_pose_ekf" name="robot_pose_ekf" output="screen">
+  <param name="output_frame" value="odom_combined"/>
+  <param name="base_footprint_frame" value="base_footprint"/>
+  <param name="freq" value="10.0"/>
+  <param name="sensor_timeout" value="1.0"/>  
+  <param name="odom_used" value="true"/>
+  <param name="imu_used" value="true"/>
+  <param name="vo_used" value="false"/>
+  <param name="debug" value="true"/>
+```
+查看配置参数可以了解到该包可以融合里程计、IMU、视觉里程计以及GPS数据，这里就使能了里程及以及IMU的融合
+***
+# 模型与地图的载入
+## 模型文件放在”adv_sim/my_xacro/myrobot.urdf”
+## 地图文件放在“/maps/work1.yaml”
+**地图使用cartogragper包制作的比hector_slam包制作的效果要好，两个包都是只给激光主题，没有给里程计或者imu数据**
+***
+# amcl定位
+```
+<node pkg="amcl" type="amcl" name="amcl" output="screen">
+        <param name="use_map_topic"             value="ture"/>
+        <param name="odom_frame_id"             value="odom_combined"/>
+      <param name="base_frame_id"             value="base_footprint"/>
+      <param name="global_frame_id"           value="map"/>
+      <param name="odom_model_type"           value="diff"/>
+      <param name="gui_publish_rate"          value="10.0"/>
+
+  <param name="laser_max_beams"           value="60"/>
+        <param name="laser_min_range"           value="0.2"/>
+        <param name="laser_max_range"           value="6.0"/>
+
+  <param name="min_particles"             value="500"/>
+      <param name="max_particles"             value="5000"/>
+
+      <param name="laser_z_hit"               value="0.95"/>
+      <param name="laser_z_short"             value="0.025"/>
+      <param name="laser_z_max"               value="0.025"/>
+      <param name="laser_z_rand"              value="0.05"/>
+      <param name="laser_sigma_hit"           value="0.2"/>
+      <param name="laser_lambda_short"        value="0.1"/>
+
+      <param name="update_min_d"              value="0.1"/>
+      <param name="update_min_a"              value="0.2"/>
+      <param name="resample_interval"         value="3"/>
+
+      <param name="transform_tolerance"       value="0.5"/>
+
+      <param name="recovery_alpha_slow"       value="0.0"/>
+      <param name="recovery_alpha_fast"       value="0.0"/>
+        <param name="initial_cov_xx"            value="0.25"/>
+        <param name="initial_cov_yy"            value="0.25"/>
+        <param name="initial_cov_aa"            value="10.0"/>
+    </node>
+```
+amcl定位参数设置：（[官网更多参数说明](http://wiki.ros.org/amcl)）
+odom_frame_id要使用融合后的里程计主题;
+update_min_d为更新距离，此处为走0.1m更新一次粒子;
+min_particles、max_particles为最小粒子、最大粒子数;
+laser_min_range、laser_max_range为激光最小、最大范围;
+odom_model_type为模型类型这里diff为差速控制
