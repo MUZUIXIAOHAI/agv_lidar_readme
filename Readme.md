@@ -18,7 +18,7 @@ catkin_make
 roslaunch rslidar_pointcloud rs_lidar_16.launch
 ```
 
-# ---
+***
 
 # 把16线激光雷达数据合成高质量2D激光雷达数据
 ### 可参考蓝鲸机器人论坛的帖子（叫“使用pointcloud_to_laserscan包将速腾聚创3D激光雷达转换成高质量2d激光雷达”）
@@ -27,7 +27,7 @@ roslaunch rslidar_pointcloud rs_lidar_16.launch
 roslaunch pointcloud_to_laserscan xiaoqiang_rslidar.launch
 '''
 
-# ---
+***
 
 # 利用cartogragper包构建高质量地图
 ### 可参考蓝鲸论坛的这个帖子，或者参考小强机器人手册中的第16章节
@@ -40,7 +40,8 @@ roslaunch cartographer_ros xiaoqiang_rplidar_2d.launch
 rosrun map_server map_saver --occ 51 --free 49 -f work0
 ```
 
-# ---
+***
+
 # agv启动movebase包
 ### 启动里程计、IMU、雷达、以及move_base包（导航包）
 ```
@@ -79,7 +80,8 @@ roslaunch adv_comm agv_move_base.launch
     </node>
 ```
 
-# ---
+***
+
 # agv启动定位、开始激光导航
 ### agv启动amcl定位、载入地图、模型、IMU与里程计数据融合以及启动rviz
 ```
