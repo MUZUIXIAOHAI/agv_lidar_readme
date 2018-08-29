@@ -173,22 +173,22 @@ roslaunch adv_sim agv_amcl_slam_v2.launch
 # 里程计说明：
 ## “get_message.launch”
 *adv_comm->launch->get_message.launch*
-该文件是生成里程计的launch文件，源代码在**adv_comm->src->rplidar_client.cpp**文件
-该文件订阅了“cmd_vel”主题，接收速度指令，通过串口传输到agv上，从而驱动agv动作
-发布“odom”主题，利用agv传回来的电机脉冲计算出行驶里程
-`initial_all()`是初始化串口和设置一些初始参数
-`sp1operation()`是发送速度信息到agv，控制agv行动，并且接收agv采集回来的电机脉冲数据
-`calculate_odom(odom)`是计算里程计数据
-`odom_pub.publish(odom)`发布里程计主题
-`velCallback_motorspeed()`该函数是有速度主题发出，就进入该函数，把速度信息给到agv
+该文件是生成里程计的launch文件，源代码在**adv_comm->src->rplidar_client.cpp**文件    
+该文件订阅了“cmd_vel”主题，接收速度指令，通过串口传输到agv上，从而驱动agv动作    
+发布“odom”主题，利用agv传回来的电机脉冲计算出行驶里程    
+`initial_all()`是初始化串口和设置一些初始参数    
+`sp1operation()`是发送速度信息到agv，控制agv行动，并且接收agv采集回来的电机脉冲数据    
+`calculate_odom(odom)`是计算里程计数据    
+`odom_pub.publish(odom)`发布里程计主题    
+`velCallback_motorspeed()`该函数是有速度主题发出，就进入该函数，把速度信息给到agv    
 ***
 # IMU说明：
 ## “razor-pub.launch”
-*razor_imu_9dof->launch->razor-pub.launch*
-IMU主程序可不用修改
-IMU的参数设置在这个文件“razor_imu_9dof/config/razor.yaml”
-该文件下：
-`port: /dev/ttyUSB003`这里更改串口名称
+*razor_imu_9dof->launch->razor-pub.launch*    
+IMU主程序可不用修改    
+IMU的参数设置在这个文件“razor_imu_9dof/config/razor.yaml”    
+该文件下：    
+`port: /dev/ttyUSB003`这里更改串口名称    
 ***
 # 雷达说明：
 ## 雷达串口、波特率可直接在此处修改
@@ -205,12 +205,12 @@ IMU的参数设置在这个文件“razor_imu_9dof/config/razor.yaml”
 ***
 # move_base包说明：
 ## move_base包主要是一些参数设置，这里就说一些主要设置的参数
-move_base包的参数在“adv_comm/param”文件夹下
+move_base包的参数在“adv_comm/param”文件夹下    
 **虽然在dwa_local_planner_params.yaml文件下定义了最高速为0.3m/s，但是在rplidar_client.cpp文件下，在对agv下发速度之前就限制了最高速为0.1m/s，以保证安全**
 ***
 # 里程计与IMU数据融合
 ## “robot_pose_ekf/robot_pose_ekf.launch”
-[遇到问题可以查看下这个帖子](https://blog.csdn.net/qq_25241325/article/details/80825327)（调用一下服务看下主题正不正常）
+[遇到问题可以查看下这个帖子](https://blog.csdn.net/qq_25241325/article/details/80825327)（调用一下服务看下主题正不正常）     
 这个包主要使用odom与imu进行融合，输出odom_combined
 ```
 <node pkg="robot_pose_ekf" type="robot_pose_ekf" name="robot_pose_ekf" output="screen">
@@ -267,9 +267,9 @@ move_base包的参数在“adv_comm/param”文件夹下
         <param name="initial_cov_aa"            value="10.0"/>
     </node>
 ```
-amcl定位参数设置：（[官网更多参数说明](http://wiki.ros.org/amcl)）
-odom_frame_id要使用融合后的里程计主题;
-update_min_d为更新距离，此处为走0.1m更新一次粒子;
-min_particles、max_particles为最小粒子、最大粒子数;
-laser_min_range、laser_max_range为激光最小、最大范围;
-odom_model_type为模型类型这里diff为差速控制
+amcl定位参数设置：（[官网更多参数说明](http://wiki.ros.org/amcl)）    
+odom_frame_id要使用融合后的里程计主题;    
+update_min_d为更新距离，此处为走0.1m更新一次粒子;    
+min_particles、max_particles为最小粒子、最大粒子数;    
+laser_min_range、laser_max_range为激光最小、最大范围;   
+odom_model_type为模型类型这里diff为差速控制   
