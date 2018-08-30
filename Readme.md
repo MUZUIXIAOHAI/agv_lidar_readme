@@ -305,3 +305,13 @@ rqt_graph
 **或者运行/shenlan/driver/lidar/rplidar_ros/scripts/create_udev_rules.sh，这个文件我已经配置好，直接运行就可以了，运行完后插入传感器就可以看到对应的映射**
 ***
 # [蓝鲸论坛](https://community.bwbot.org/)有很多可以值得参考的地方，可以多查看
+***
+# 启动键盘操作
+```
+rosrun teleop_twist_keyboard teleop_twist_keyboard.py
+```
+**这个是键盘操作，可以给一次命令后不需要操作自己走的，记得把turn调整到与速度差不多大小，不然转弯太快**
+```
+roslaunch rbx1_nav keyboard_teleop.launch
+```
+**这个也是一样的键盘操作，但是只有按着的时候才会动，不按的时候就慢慢停下**
