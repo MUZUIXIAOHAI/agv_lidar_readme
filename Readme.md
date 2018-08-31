@@ -315,3 +315,26 @@ rosrun teleop_twist_keyboard teleop_twist_keyboard.py
 roslaunch rbx1_nav keyboard_teleop.launch
 ```
 **这个也是一样的键盘操作，但是只有按着的时候才会动，不按的时候就慢慢停下**
+
+***
+# 启动导航脚本
+**导航脚本是用原来的示例程序改的**
+源程序文件在need_pkg/rbx1/rbx1_nav/nodes/nav_test.py  
+**在运行此导航节点前先给定初始定位，利用键盘移动机器人使amcl粒子收敛到一定程**  
+下面语句是在终端运行此节点的命令
+```
+rosrun rbx1_nav nav_test.py
+```
+## 关于nav_test.py的说明
+主要运行程序在class NavTest()下    
+### 给定目标点
+字典`locations`定义了目标点，这里定义了12个目标点，需要走多少个就给多少个点，目标点的位置信息可以通过监控主题/move_base/current_goal，然后在rviz中给定目标点查看。（但是要先启动move_base节点）
+```
+rostopic echo /move_base/current_goal
+```
+### 给定初始定位的点，即打散粒子，其实这里可以给定RFID，然后在外部做一个校准
+字典`initial_points`定义了定位的点，可以在程序第176行`if (i+1) == 4 :`这里下
+选择在哪个点打散粒子
+### 中断脚本的时候
+中断脚本之后，可以修改i的初始参数，选择从哪个点之后开始导航   
+代码在133行 `i = 0` 注释# 4 9 11的意思是我之前调试的时候在第4、9、11这个点中断了，也就是不能寻找回来，就是定位不准确需要重新定位。
