@@ -308,6 +308,15 @@ rqt_graph
 ***
 # 当换计算机时，可以映射串口到固定名称，这样就不需要按顺序插入传感器了，可以参考[蓝鲸的这个帖子](https://community.bwbot.org/topic/134/%E5%B0%8F%E5%BC%BAros%E6%9C%BA%E5%99%A8%E4%BA%BA%E6%95%99%E7%A8%8B-13-___rplidar%E4%BA%8C%E4%BB%A3%E6%BF%80%E5%85%89%E9%9B%B7%E8%BE%BE%E7%9A%84%E4%BD%BF%E7%94%A8%E5%92%8C%E5%88%A9%E7%94%A8udev%E7%BB%99%E5%B0%8F%E8%BD%A6%E5%A2%9E%E5%8A%A0%E4%B8%B2%E5%8F%A3%E8%AE%BE%E5%A4%87)
 **或者运行/shenlan/driver/lidar/rplidar_ros/scripts/create_udev_rules.sh，这个文件我已经配置好，直接运行就可以了，运行完后插入传感器就可以看到对应的映射**
+**通过lsusb命令可以查看到所有外接usb的接口设备的描述列表，可以得到id product和id VENDOR的数值，来进行后续的绑定.ls / dev可以查看所有外接串口设备的名字列表。**
+**另外一个办法，就是通过绑定设备的硬件端口号 ，如下命令 
+
+echo  'KERNELS=="3-1.1",  MODE:="0666", GROUP:="dialout",  SYMLINK+="usb_0"' >/etc/udev/rules.d/usb.rules  
+
+会将硬件上属于 3-1.1 的设备号映射到USB_0上 ， 可以通过以下命令 查看 板子上的硬件端口的内核设备名 。
+
+udevadm info --attribute-walk --name=/dev/ttyACM0 
+
 ***
 # [蓝鲸论坛](https://community.bwbot.org/)有很多可以值得参考的地方，可以多查看
 ***
