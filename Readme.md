@@ -44,6 +44,7 @@ roslaunch cartographer_ros xiaoqiang_rplidar_2d_16.launch
 ```
 rosrun map_server map_saver --occ 51 --free 49 -f work0
 ```
+注意：如果该命令有错说明map_server这个包旧了，更新包就行了
 
 ***
 
