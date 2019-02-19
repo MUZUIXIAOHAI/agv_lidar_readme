@@ -45,7 +45,7 @@ roslaunch cartographer_ros xiaoqiang_rplidar_2d_16.launch
 rosrun map_server map_saver --occ 51 --free 49 -f work0
 ```
 注意：如果该命令有错说明map_server这个包旧了，更新包就行了
-
+运行时如果没有机器人显示，先运行一下demo_xiaoqiang_rslidar_scan.launch文件，再运行xiaoqiang_rplidar_2d_16.launch文件，注意：没有机器人显示出来时也可以正常建图
 ***
 
 # agv启动movebase包
