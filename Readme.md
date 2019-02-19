@@ -354,5 +354,5 @@ rostopic echo /move_base/current_goal
 中断脚本之后，可以修改i的初始参数，选择从哪个点之后开始导航   
 代码在133行 `i = 0` 注释# 4 9 11的意思是我之前调试的时候在第4、9、11这个点中断了，也就是不能寻找回来，就是定位不准确需要重新定位。
 
-# 在使用ROS BAG 播放数据时，需要使用--clock参数，在launch文件中Set the parameter /use_sim_time to true;
+## 在使用ROS BAG 播放数据时，需要使用--clock参数，在launch文件中Set the parameter /use_sim_time to true;
 
