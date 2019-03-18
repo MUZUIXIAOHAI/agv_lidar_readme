@@ -316,6 +316,7 @@ echo  'KERNELS=="3-1.1",  MODE:="0666", GROUP:="dialout",  SYMLINK+="usb_
 
 会将硬件上属于 3-1.1 的设备号映射到USB_0上 ， 可以通过以下命令 查看 板子上的硬件端口的内核设备名 。
 udevadm info --attribute-walk --name=/dev/ttyUSB0 | grep KERNELS
+
 udevadm info --attribute-walk --name=/dev/ttyACM0 
 
 ***
